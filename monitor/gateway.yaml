@@ -1,0 +1,41 @@
+---
+type: gateway
+log:
+    version: 1
+    formatters:
+        console_formatter:
+            format: "[%(asctime)s %(levelname)s %(name)s] %(message)s"
+        default: {}
+    handlers:
+        console_handler:
+            class: logging.StreamHandler
+            formatter: console_formatter
+            level: DEBUG
+        syslog:
+            class: hat.syslog.handler.SysLogHandler
+            host: localhost
+            port: 6514
+            comm_type: TCP
+            level: INFO
+            formatter: default
+            queue_size: 50
+            filters: []
+    root:
+        level: INFO
+        handlers: ['syslog']
+        # handlers: ['console_handler', 'syslog']
+monitor:
+    name: gateway
+    group: gateway
+    monitor_address: "tcp+sbs://127.0.0.1:23010"
+gateway_name: 'dino_gw'
+devices:
+  - module: device
+    name: 'my_device'
+    test_conf: 'evo ti'
+event_server_group: event_server
+devices:
+  - module: device
+    name: 'my_device'
+    test_conf: 'evo ti'
+...

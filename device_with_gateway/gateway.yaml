@@ -1,0 +1,48 @@
+---
+type: gateway
+log:
+    version: 1
+    formatters:
+        console_formatter:
+            format: "[%(asctime)s %(levelname)s %(name)s] %(message)s"
+    handlers:
+        console_handler:
+            class: logging.StreamHandler
+            formatter: console_formatter
+            level: DEBUG
+    root:
+        level: INFO
+        handlers: ['console_handler']
+    disable_existing_loggers: false
+gateway_name: 'dino_gw'
+devices:
+  # - module: hat.gateway.devices.modbus.master
+  #   name: 'device_modbus'
+  #   connection:
+  #     modbus_type: 'TCP'
+  #     transport:
+  #       type: TCP
+  #       host: localhost
+  #       port: 2555
+  #     connect_timeout: 5
+  #     connect_delay: 1
+  #     request_timeout: 5
+  #     request_retry_count: 1
+  #     request_retry_delay: 1
+  #   remote_devices:
+  #     - device_id: 1
+  #       data:
+  #         - name: 'my_device'
+  #           interval: 1
+  #           data_type: HOLDING_REGISTER
+  #           start_address: 100
+  #           bit_offset: 0
+  #           bit_count: 16
+  - module: device
+    name: 'my_device'
+    test_conf: 'evo ti'
+  - module: device
+    name: 'my_device_2'
+    test_conf: 'evo ti 2'
+event_server_address: 'tcp+sbs://localhost:23012'
+...

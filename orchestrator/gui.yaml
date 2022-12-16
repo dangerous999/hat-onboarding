@@ -1,0 +1,57 @@
+---
+type: gui
+log:
+    version: 1
+    formatters:
+        console_formatter:
+            format: "[%(asctime)s %(levelname)s %(name)s] %(message)s"
+        default: {}
+    handlers:
+        console_handler:
+            class: logging.StreamHandler
+            formatter: console_formatter
+            level: DEBUG
+        syslog:
+            class: hat.syslog.handler.SysLogHandler
+            host: localhost
+            port: 6514
+            comm_type: TCP
+            level: INFO
+            formatter: default
+            queue_size: 50
+            filters: []
+    root:
+        level: INFO
+        handlers: ['syslog']
+        # handlers: ['console_handler', 'syslog']
+adapters:
+  # - name: modbus_adapter
+  #   module: hat.gui.adapters.latest
+  #   authorized_roles:
+  #   - admin
+  #   items:
+  #     - key: modbus_data
+  #       event_type: ["modbus", "data", "counter"]
+  - name: my_adapter
+    module: simple_adapter
+    subscriptions:
+      - ['gateway', 'dino_gw', 'my_modbus_device', '?', 'gateway', 'read_result', '*']
+      - ['gateway', 'dino_gw', 'my_modbus_device', '?', 'gateway', 'manual_read_result', '*']
+    items:
+      - key: manual_read_counter_1
+        event_type: ['gateway', 'dino_gw', 'my_modbus_device', 'my_device', 'gateway', 'manual_read_result', 'counter', '1']
+      - key: manual_read_counter_2
+        event_type: ['gateway', 'dino_gw', 'my_modbus_device', 'my_device', 'gateway', 'manual_read_result', 'counter', '2']
+views: []
+address: "http://localhost:23023"
+initial_view: null
+users:
+  - name: user1
+    password:  # pass1
+        hash: '4f51b0a300aeadf7f13d87e43eb48f8d95149efa7dde614194b4aa1e116bf078'
+        salt: 'a8534416dc3caca0ec6f4f1a298ead2c'
+    roles:
+        - admin
+    view: null
+event_server_address: 'tcp+sbs://localhost:23012'
+...

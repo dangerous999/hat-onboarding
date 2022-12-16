@@ -1,0 +1,39 @@
+---
+"$schema": "http://json-schema.org/schema#"
+id: 'my_stuff://everything/devices/modbus_master/schema.yaml#'
+type: object
+required:
+    - address
+    - port
+    - interval
+    - data
+properties:
+    address:
+        type: string
+    port:
+        type: number
+    interval:
+        type: number
+    data:
+        type: array
+        items:
+            type: object
+            required:
+                - data_type
+                - start_address
+                - counter_id
+                - quantity
+            properties:
+                data_type:
+                    enum:
+                        - COIL
+                        - DISCRETE_INPUT
+                        - HOLDING_REGISTER
+                        - INPUT_REGISTER
+                        - QUEUE
+                start_addres:
+                    type: number
+                counter_id:
+                    type: number
+                quantity:
+                    type: number

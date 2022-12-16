@@ -1,0 +1,45 @@
+---
+type: event
+log:
+    version: 1
+    formatters:
+        console_formatter:
+            format: "[%(asctime)s %(levelname)s %(name)s] %(message)s"
+        default: {}
+    handlers:
+        console_handler:
+            class: logging.StreamHandler
+            formatter: console_formatter
+            level: DEBUG
+        syslog:
+            class: hat.syslog.handler.SysLogHandler
+            host: localhost
+            port: 6514
+            comm_type: TCP
+            level: INFO
+            formatter: default
+            queue_size: 50
+            filters: []
+    root:
+        level: INFO
+        handlers: ['console_handler', 'syslog']
+backend:
+    module: hat.event.server.backends.lmdb
+    db_path: ./event.db
+    max_db_size: 100000000
+    flush_period: 10
+    conditions: []
+    latest:
+        subscriptions: [['counter', '?']]
+    ordered:
+      - order_by: TIMESTAMP
+        subscriptions: [['*']]
+        limit: {}
+engine:
+    server_id: 1
+    modules: []
+eventer_server:
+    address: 'tcp+sbs://localhost:23012'
+syncer_server:
+    address: 'tcp+sbs://localhost:23013'
+...

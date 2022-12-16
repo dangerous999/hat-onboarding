@@ -1,0 +1,10 @@
+---
+"$schema": "http://json-schema.org/schema#"
+id: 'my_stuff://everything/modules/my_modbus/schema.yaml#'
+type: object
+required:
+    - subscription
+properties:
+    subscription:
+        type: array
+...

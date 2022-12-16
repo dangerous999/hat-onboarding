@@ -1,0 +1,59 @@
+---
+type: gateway
+log:
+    version: 1
+    formatters:
+        console_formatter:
+            format: "[%(asctime)s %(levelname)s %(name)s] %(message)s"
+        default: {}
+    handlers:
+        console_handler:
+            class: logging.StreamHandler
+            formatter: console_formatter
+            level: DEBUG
+        syslog:
+            class: hat.syslog.handler.SysLogHandler
+            host: localhost
+            port: 6514
+            comm_type: TCP
+            level: INFO
+            formatter: default
+            queue_size: 50
+            filters: []
+    root:
+        level: INFO
+        # handlers: ['syslog']
+        handlers: ['console_handler', 'syslog']
+gateway_name: 'dino_gw'
+devices:
+  - module: devices.modbus_master
+    name: 'my_device'
+    address: localhost
+    port: 2555
+    interval: 5
+    data:
+        - data_type: HOLDING_REGISTER
+          start_address: 100
+          counter_id: 1
+          quantity: 1
+        - data_type: HOLDING_REGISTER
+          start_address: 110
+          counter_id: 2
+          quantity: 1
+  - module: devices.modbus_master
+    name: 'my_device_2'
+    address: localhost
+    port: 2555
+    interval: 5
+    data:
+        - data_type: HOLDING_REGISTER
+          start_address: 200
+          counter_id: 1
+          quantity: 1
+        - data_type: HOLDING_REGISTER
+          start_address: 210
+          counter_id: 2
+          quantity: 1
+
+event_server_address: 'tcp+sbs://localhost:23012'
+...

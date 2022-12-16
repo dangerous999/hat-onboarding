@@ -1,0 +1,12 @@
+---
+type: syslog
+log:
+    version: 1
+syslog_addr: 'tcp://0.0.0.0:6514'
+ui_addr: 'http://0.0.0.0:23020'
+db_path: 'syslog.db'
+db_low_size: 1_000_000
+db_high_size: 10_000_000
+db_enable_archive: false
+db_disable_journal: false
+...
